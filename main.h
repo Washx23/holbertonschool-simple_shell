@@ -10,5 +10,5 @@
 
 /* Prototype punctions */
 int exit_func(void);
-
+int vexec(char **args, char **enve);
 #endif
