@@ -1,36 +1,31 @@
 #include "main.h"
-char **split_line(char *line);
-char **get_path(void);
-char **paste_comand(char **tokens);
-void exe(char **command);
-/**
- *
- *
- */
-int main(char **pathtokens)
-{
-	char * BUF = NULL;
-	size_t i = 0;
-	char ** BUFTOK = NULL;
-	char ** command;
+char ** split_line(char *line);
+char ** get_path(void);
+char ** paste_command(char ** tokens);
+void exe(char ** command, char ** buftok);
+int exit_fun(char ** command);
 
-	while(1)
-	{
-		printf("$");
-		if(getline(&BUF, &i, stdin) == -1)
+int main(void)
+{
+	char * buffer = NULL;
+	size_t i = 0;
+	char ** command;
+	char ** buftok;
+	while (1)
+	{	
+		printf("$ ");
+		if(getline(&buffer, &i, stdin) == -1)
 			return(0);
-		BUFTOK = split_line(BUF);
-		command = paste_comand(BUFTOK);
-		exe(BUFTOK, command);
-		if (strcmp(buffer, "exit_fun") == 0)
+		buftok = split_line(buffer);
+		exe(command, buftok);
+
+		if (strcmp(buffer, "exit") == 0)
 		{
 			return (0);
 		}
 	}
-/**
- *
- *
- */
+}
+
 char ** split_line(char *line)
 {
 	char *token;
@@ -39,112 +34,108 @@ char ** split_line(char *line)
 	int j = 0;
 
 	tokens = malloc(sizeof(char *) * i);
-	token = strtok(line, " \n");
-	/*line : lo que quiero tokenizar 
-	 * " \n" limitadores que quiero eliminar*/
-	while (token)/*loop que recorre y tokeniza */
+	token = strtok(line, "	 \n");
+	while (token)
 	{
 		tokens[j] = token;
-		token = strtok(NULL, " \n");
-		/*apartir de aca tokeniza el siguiente argumento*/
-		j++;	
-	}
+		token = strtok(NULL, " \n");/*apartir de aca tokeniza el siguiente argumento*/
+		j++;
+	}/*loop que recorre y tokeniza */
 	return (tokens);
+	/*line : lo que quiero tokenizar
+	 * * " \n" limitadores que quiero eliminar*/
 }
-/**
- *
- *
- *
- */
 char ** get_path(void)
 {
-	/*getenv obtene el valor de la variable de entorno que nosotros queremos*/
-	char *path = getenv("PATH");
+	char *path = getenv("PATH");/*getenv obtene el valor de la variable de entorno que nosotros queremos*/
 	char *ptoken;
 	char **pathtokens;
 	int i = 1024;
 	int j = 0;
 	/*PATH : /us/bin..*/
 
-	pathtokens = malloc(sizeof(char*) * i);
+	pathtokens = malloc(sizeof(char *) * i);
 	ptoken = strtok(path, ":");
-	/*path: lo que quiero tokenizar 
-	 * ":" limitadores que quiero eliminar*/
-	while (ptoken)/*loop que recorre y tokeniza*/
+
+	while (ptoken)
 	{
-		pathtokens[j] = ptoken;
+		pathtokens[j] = ptoken;/*loop que recorre y tokeniza*/
 		ptoken = strtok(NULL, ":");
 		j++;
 	}
-	return(pathtokens);
+	return (pathtokens);
+	/*path: lo que quiero tokenizar
+	 * ":" limitadores que quiero eliminar*/
 }
-
-char **paste_comand(char **tokens)
+char ** paste_command(char ** tokens)
 {
-	char * commandcopy;
-	char ** path = get_path();
-	char * command = NULL;
-	int i = 0;
-	struct stat buffer;
+	 char * commandcopy;
+	 char ** path = get_path();
+	 char * command = NULL;
+	 int i = 0;
+	 struct stat buf;
 
-	while (path[i])
-	{
+	 while(path[i])
+	 {
 		commandcopy = tokens[0];/*guarda una copia del getline*/
 		command = malloc(strlen(path[i]) + strlen(commandcopy) + 1);
 		/*almacena espacio para el PATH y el comando*/
-		if (!command)
+		if(!command)
 		{
 			perror("ERROR!1");
 			exit(EXIT_FAILURE);
 		}
 		strcpy(command, path[i]);
-		strcat(command, "/");
-		/*añade un backlash al PATH*/
-		strcat(command, commandcopy);
-		/*añade el argumento al PATH con el backlash*/
-		if (!stat(command, &buffer))
+		strcat(command, "/");/*añade un backlash al PATH*/
+		strcat(command, commandcopy);/*añade un backlash al PATH*/
+		if (!stat(command, &buf))
 		{
-			tokens[0] = command;
-			return  (tokens);
+		       tokens[0] = command;
+		       return(tokens);
 		}
 		i++;
 	}
 	return (tokens);
 }
-void exe(char **command, char **BUFTOK)
+void exe(char ** command, char ** buftok)
 {
-	char * buffer = NULL;
-	pid_t w, f;
+	char * buff = NULL;
+	pid_t p, w;
 	char TCX = 0;
+
 	int wstatus;
 
-	w = fork();
+	p = fork();
 
-	if (w == -1)
+	if (p == -1)
 	{
-		perror("ERROR!2");
+		perror("EEROR!2(acasapete!)");
 		exit(EXIT_FAILURE);
 	}
-	else if (w == 0)
+	else if (p == 0)
 	{
-		command = paste_command(BUFTOK);
+		command = paste_command(buftok);
 		TCX = execve(command[0], command, NULL);
 		exit(0);
-
 	}
-	else 
+	else
 	{
-		/* WUNTRACED:habilita al padre a ser retornado al  waitpid si el hijo se deteiene o muere
-		 * WCONTINUED: retorna al padre si un hijo detenido a sido reanudado mediante la entrega de 
-		 * sigcont : es una señal enviada para reanudar un proceso suspendido*/
-		f = waitpid(w, &wstatus, WUNTRACED | WCONTINUED);
-		if (f == -1)
+		w = waitpid(p, &wstatus, WUNTRACED | WCONTINUED);
+
+		if (w == -1)
 			exit(EXIT_FAILURE);
+		/* WUNTRACED:habilita al padre a ser retornado al  waitpid si el hijo se deteiene o muere
+		 * WCONTINUED: retorna al padre si un hijo detenido a sido reanudado mediante la entrega de
+		 * sigcont : es una señal enviada para reanudar un proceso suspendido*/
 	}
-	/*execve recive  (command[0]) el cual es el PATH, (command) el argumento
-	 * y un puntero a NULL */
-	/*busca si existe el argumento y lo ejecuta*/
+	/* WUNTRACED:habilita al padre a ser retornado al  waitpid si el hijo se deteiene o muere
+		 * WCONTINUED: retorna al padre si un hijo detenido a sido reanudado mediante la entrega de
+		 * sigcont : es una señal enviada para reanudar un proceso suspendido*/
 }
+/**
+ *fun_exit - function exit shell
+ *return: always 0
+ */
 int exit_fun(char ** command)
 {
 	return (0);
