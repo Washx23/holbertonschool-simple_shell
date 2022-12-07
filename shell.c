@@ -2,23 +2,22 @@
 char ** split_line(char *line);
 char ** get_path(void);
 char ** paste_command(char ** tokens);
-void exe(char ** command, char ** buftok);
-int exit_fun(char ** command);
+void exe(char ** buftok);
 
 int main(void)
 {
 	char * buffer = NULL;
 	size_t i = 0;
-	char ** command;
+
 	char ** buftok;
+
 	while (1)
 	{	
 		printf("$ ");
 		if(getline(&buffer, &i, stdin) == -1)
 			return(0);
 		buftok = split_line(buffer);
-		exe(command, buftok);
-
+		exe(buftok);
 		if (strcmp(buffer, "exit") == 0)
 		{
 			return (0);
@@ -97,13 +96,11 @@ char ** paste_command(char ** tokens)
 	}
 	return (tokens);
 }
-void exe(char ** command, char ** buftok)
+void exe(char ** buftok)
 {
-	char * buff = NULL;
 	pid_t p, w;
-	char TCX = 0;
-
 	int wstatus;
+	char **command;
 
 	p = fork();
 
@@ -115,7 +112,7 @@ void exe(char ** command, char ** buftok)
 	else if (p == 0)
 	{
 		command = paste_command(buftok);
-		TCX = execve(command[0], command, NULL);
+		execve(command[0], command, NULL);
 		exit(0);
 	}
 	else
@@ -129,14 +126,5 @@ void exe(char ** command, char ** buftok)
 		 * sigcont : es una señal enviada para reanudar un proceso suspendido*/
 	}
 	/* WUNTRACED:habilita al padre a ser retornado al  waitpid si el hijo se deteiene o muere
-		 * WCONTINUED: retorna al padre si un hijo detenido a sido reanudado mediante la entrega de
-		 * sigcont : es una señal enviada para reanudar un proceso suspendido*/
-}
-/**
- *fun_exit - function exit shell
- *return: always 0
- */
-int exit_fun(char ** command)
-{
-	return (0);
+		 * WCONTINUED: retorna al padre si un hijo detenido a sido reanudado*/
 }
