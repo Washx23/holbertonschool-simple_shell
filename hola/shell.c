@@ -251,7 +251,7 @@ int main(int argc, char **argv)
     char **args;
     int estado;
     do {
-      printf("%dmyshell~$ ",system("pwd"));
+	printf("$") ;   
       if(argv[1] != NULL){
         linea = argv[1];
       }else{
