@@ -15,6 +15,7 @@ int funcion_exit(char **args);
 int funcion_ls(char **args);
 int funcion_pause(char **args);
 int funcion_echo(char **args);
+int vexec(char **args, char **enve);
 
 // ----- Declaración de array llamado de funcion-----------
 char *array_str[] = {
@@ -139,7 +140,7 @@ int funcion_pause(char **args)
 /**
  * Nos permite iniciar un programa y esperar que termine 
  */
-int hilos_programa(char **args)
+/*int hilos_programa(char **args)
 {
   //Declaramos el PID y su estado
   pid_t pid;
@@ -158,6 +159,45 @@ int hilos_programa(char **args)
     } while (!WIFEXITED(estado) && !WIFSIGNALED(estado));
   }
   return 1;
+}/*
+
+
+/**
+ *vexec - function to create child process and execute correspondent
+ *command
+ *@args: double pointer pointing to string of arguments
+ *@enve: enviroment inherited from parent process to use with execve
+ *Return: exit status from child process
+ */
+int vexec(char **args, char **enve)
+{
+        pid_t pid;
+        int status = 0;
+
+        pid = fork();
+
+        if (pid == -1)
+        {
+                perror("Error");
+                return (1);
+        }
+        if (pid == 0)
+        {
+
+                if (execve(args[0], args, enve) == -1)
+                {
+                        perror("Error");
+                }
+                free(args);
+        }
+        wait(&status);
+        if (WIFEXITED(status))
+        {
+                free(args);
+                return (WEXITSTATUS(status));
+        }
+        free(args);
+        return (0);
 }
 
 /**
@@ -172,7 +212,7 @@ int comando(char **args)
       return (*array_funciones[i])(args);
     }
   }
-  return hilos_programa(args);
+  /*return hilos_programa(args);*/
 }
 
 
