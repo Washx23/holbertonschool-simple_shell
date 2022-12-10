@@ -3,6 +3,8 @@ char ** split_line(char *line);
 char ** get_path(void);
 char ** paste_command(char ** tokens);
 void exe(char ** buftok);
+char * _getenv(char * envi);
+extern char ** environ;
 
 int main(void)
 {
@@ -24,7 +26,6 @@ int main(void)
 		}
 	}
 }
-
 char ** split_line(char *line)
 {
 	char *token;
@@ -46,7 +47,7 @@ char ** split_line(char *line)
 }
 char ** get_path(void)
 {
-	char *path = getenv("PATH");/*getenv obtene el valor de la variable de entorno que nosotros queremos*/
+	char *path = _getenv("PATH");/*getenv obtene el valor de la variable de entorno que nosotros queremos*/
 	char *ptoken;
 	char **pathtokens;
 	int i = 1024;
@@ -127,4 +128,17 @@ void exe(char ** buftok)
 	}
 	/* WUNTRACED:habilita al padre a ser retornado al  waitpid si el hijo se deteiene o muere
 		 * WCONTINUED: retorna al padre si un hijo detenido a sido reanudado*/
+}
+char * _getenv(char * envi)
+{
+	char ** env = environ;
+	char *path = NULL;
+
+	for (int i = 0; env[i]; i++)
+	{
+		path = strtok(env[i], "=");
+		if (!strcmp(path, envi))
+			return(strtok(NULL, "="));
+	}
+	return (NULL);
 }
