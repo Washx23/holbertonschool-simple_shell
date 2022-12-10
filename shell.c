@@ -133,8 +133,9 @@ char * _getenv(char * envi)
 {
 	char ** env = environ;
 	char *path = NULL;
+	int i = 0;
 
-	for (int i = 0; env[i]; i++)
+	for (i = 0; env[i]; i++)
 	{
 		path = strtok(env[i], "=");
 		if (!strcmp(path, envi))
