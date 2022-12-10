@@ -7,12 +7,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <limits.h>
-
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+#include <stddef.h>
 /* Prototype punctions */
-int exit_func(void);
-<<<<<<< HEAD
-
-=======
-int vexec(char **args, char **enve);
->>>>>>> 56fc37fab8215371b0dab9c37d39e940edfca238
 #endif
