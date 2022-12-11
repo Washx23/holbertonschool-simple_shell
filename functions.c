@@ -107,7 +107,7 @@ void exe(char ** buftok)
 	else if (p == 0)
 	{
 		command = paste_command(buftok);
-		execve(command[0], command, NULL);
+		execve(command[0], command, environ);
 		exit(0);
 	}
 	else

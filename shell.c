@@ -9,7 +9,8 @@ int main(void)
 
 	while (1)
 	{	
-		printf("$ ");
+		if(isatty(0) == 1)
+			printf("SWF$ ");
 		if(getline(&buffer, &i, stdin) == -1)
 			return(0);
 		buftok = split_line(buffer);
