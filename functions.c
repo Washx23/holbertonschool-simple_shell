@@ -92,16 +92,18 @@ char ** paste_command(char ** tokens)
 	 while(path[i])
 	 {
 		commandcopy = tokens[0];/*guarda una copia del getline*/
-		command = malloc(_strlen(path[i]) + _strlen(commandcopy) + 1);
+		command = calloc(_strlen(path[i]) + _strlen(commandcopy) + 2, sizeof(char));
 		/*almacena espacio para el PATH y el comando*/
 		if (!tokens[0])
 		{
 			free(tokens[0]);
 			free(command);
+			free(path);
 			exit(0);
 		}
 		if(!command)
 		{
+			free(command);
 			perror("ERROR!1");
 			exit(EXIT_FAILURE);
 		}
@@ -115,6 +117,7 @@ char ** paste_command(char ** tokens)
 		}
 		i++;
 	}
+	free(path);
 	free(command);
 	return (tokens);
 }

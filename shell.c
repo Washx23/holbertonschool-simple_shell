@@ -27,7 +27,7 @@ int main(void)
 			free(buffer);
 			exit(EXIT_SUCCESS);
 		}
-	}	
+	}
 	free(buftok);
 	free(buffer);
 	exit(EXIT_SUCCESS);
