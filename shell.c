@@ -12,12 +12,23 @@ int main(void)
 		if(isatty(0) == 1)
 			printf("SWF$ ");
 		if(getline(&buffer, &i, stdin) == -1)
+		{
+			free(buffer);
 			return(0);
-		buftok = split_line(buffer);
-		exe(buftok);
+		}
+		else
+		{
+			buftok = split_line(buffer);
+			exe(buftok);
+			free(buftok);
+		}
 		if (_strcmp(buffer, "exit") == 0)
 		{
-			return (0);
+			free(buffer);
+			exit(EXIT_SUCCESS);
 		}
-	}
+	}	
+	free(buftok);
+	free(buffer);
+	exit(EXIT_SUCCESS);
 }

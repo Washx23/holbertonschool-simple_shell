@@ -1,5 +1,22 @@
 #include "main.h"
 
+int num_count (char *var)
+{
+	int count = 0;
+	char *aux;
+	char *dup = strdup(var);
+
+
+
+	aux = strtok(dup, ": 	\n");
+	while (aux)
+	{
+		aux = strtok(NULL, ":    \n");
+		count++;
+	}
+	free(dup);
+	return (count);
+}
 /**
  *
  *
@@ -10,18 +27,26 @@ char ** split_line(char *line)
 {
 	char *token;
 	char ** tokens;
-	int i = 1024;
+	int number = 0;
 	int j = 0;
 
-	tokens = malloc(sizeof(char *) * i);
+	number = num_count(line);
+
+	tokens = malloc(sizeof(char *) * (number + 1));
+	if (!tokens)
+	{
+		free(tokens);
+	}
 	token = strtok(line, "	 \n");
 	while (token)
 	{
 		tokens[j] = token;
 		token = strtok(NULL, "	 \n");/*apartir de aca tokeniza el siguiente argumento*/
 		j++;
+		return(tokens);
 	}/*loop que recorre y tokeniza */
-	return (tokens);
+	free(tokens);
+	exit(0);
 	/*line : lo que quiero tokenizar
 	 * * " \n" limitadores que quiero eliminar*/
 }
@@ -34,11 +59,12 @@ char ** get_path(void)
 	char *path = _getenv("PATH");/*getenv obtene el valor de la variable de entorno que nosotros queremos*/
 	char *ptoken;
 	char **pathtokens;
-	int i = 1024;
+	int pnumber;
 	int j = 0;
 	/*PATH : /us/bin..*/
+	pnumber = num_count(path);
 
-	pathtokens = malloc(sizeof(char *) * i);
+	pathtokens = malloc(sizeof(char *) * (pnumber + 1));
 	ptoken = strtok(path, ":");
 
 	while (ptoken)
@@ -68,6 +94,12 @@ char ** paste_command(char ** tokens)
 		commandcopy = tokens[0];/*guarda una copia del getline*/
 		command = malloc(_strlen(path[i]) + _strlen(commandcopy) + 1);
 		/*almacena espacio para el PATH y el comando*/
+		if (!tokens[0])
+		{
+			free(tokens[0]);
+			free(command);
+			exit(0);
+		}
 		if(!command)
 		{
 			perror("ERROR!1");
@@ -83,6 +115,7 @@ char ** paste_command(char ** tokens)
 		}
 		i++;
 	}
+	free(command);
 	return (tokens);
 }
 /**
