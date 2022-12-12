@@ -20,7 +20,7 @@ int main(void)
 		{
 			buftok = split_line(buffer);
 			exe(buftok);
-			free(buftok);
+			free_grid(buftok);
 		}
 		if (_strcmp(buffer, "exit") == 0)
 		{
@@ -28,7 +28,6 @@ int main(void)
 			exit(EXIT_SUCCESS);
 		}
 	}
-	free(buftok);
-	free(buffer);
+	free_grid(buftok);
 	exit(EXIT_SUCCESS);
 }
