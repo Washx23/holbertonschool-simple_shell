@@ -1,37 +1,18 @@
 #include "main.h"
 
-int num_count (char *var)
-{
-	int count = 0;
-	char *aux;
-	char *dup = strdup(var);
-
-
-
-	aux = strtok(dup, ": 	\n");
-	while (aux)
-	{
-		aux = strtok(NULL, ":    \n");
-		count++;
-	}
-	free(dup);
-	return (count);
-}
 /**
- *
- *
- *
- *
+ * split_line - function that tokenizes
+ * @line: arguments obtained in shell.c
+ * Return: tokens.
  */
-char ** split_line(char *line)
+char **split_line(char *line)
 {
 	char *token;
-	char ** tokens;
+	char **tokens;
 	int number = 0;
 	int j = 0;
 
 	number = num_count(line);
-
 	tokens = _calloc(number + 1, sizeof(char *));
 	if (!tokens)
 	{
@@ -41,22 +22,27 @@ char ** split_line(char *line)
 	while (token)
 	{
 		tokens[j] = token;
-		token = strtok(NULL, "	 \n");/*apartir de aca tokeniza el siguiente argumento*/
+		token = strtok(NULL, "	 \n");
+		/*apartir de aca tokeniza el siguiente argumento*/
 		j++;
-		return(tokens);
 	}
-	free(line);/*loop que recorre y tokeniza */
-	exit(0);
-	/*line : lo que quiero tokenizar
-	 * * " \n" limitadores que quiero eliminar*/
+	return (tokens);
+	/*
+	 * line : lo que quiero tokenizar
+	 * " \n" limitadores que quiero eliminar
+	 */
 }
-/***
- *
- *
+/**
+ * get_path - function that gets the path.
+ * Return: pathkens
  */
-char ** get_path(void)
+char **get_path(void)
 {
-	char *path = _getenv("PATH");/*getenv obtene el valor de la variable de entorno que nosotros queremos*/
+	char *path = _getenv("PATH");
+	/*
+	 * getenv obtene el valor de la
+	 * variable de entorno que nosotros queremos
+	 */
 	char *ptoken;
 	char **pathtokens;
 	int pnumber;
@@ -74,25 +60,29 @@ char ** get_path(void)
 		j++;
 	}
 	return (pathtokens);
-	/*path: lo que quiero tokenizar
-	 * ":" limitadores que quiero eliminar*/
+	/*
+	 * path: lo que quiero tokenizar
+	 * ":" limitadores que quiero eliminar
+	 */
 }
 /**
- *
- *
+ * paste_command - function that concatenates what
+ * is received and compares it with the binary to be executed
+ * @tokens: is a arguments.
+ * Return: 0.
  */
-char ** paste_command(char ** tokens)
+char **paste_command(char **tokens)
 {
-	 char * commandcopy;
-	 char ** path = get_path();
-	 char * command = NULL;
-	 int i = 0;
-	 struct stat buf;
+	char *commandcopy;
+	char **path = get_path();
+	char *command = NULL;
+	int i = 0;
+	struct stat buf;
 
-	 while(path[i])
-	 {
+	while (path[i])
+	{
 		commandcopy = tokens[0];/*guarda una copia del getline*/
-		command = _calloc(_strlen(path[i]) + _strlen(commandcopy) + 2, sizeof(char));
+		command = _calloc(_strlen(path[i]) + _strlen(commandcopy) + 1, sizeof(char));
 		/*almacena espacio para el PATH y el comando*/
 		if (!tokens[0])
 		{
@@ -101,7 +91,7 @@ char ** paste_command(char ** tokens)
 			free(path);
 			exit(0);
 		}
-		if(!command)
+		if (!command)
 		{
 			free(command);
 			perror("ERROR!1");
@@ -113,21 +103,21 @@ char ** paste_command(char ** tokens)
 		if (!stat(command, &buf))
 		{
 			tokens[0] = command;
-			return(tokens);
+			return (tokens);
 		}
+		free(command), command = NULL;
 		i++;
 	}
+	free(tokens);
 	free_grid(path);
-	free(command);
-	return (tokens);
+	free(command), command = NULL;
+	return (0);
 }
 /**
- *
- *
- *
- *
+ * exe - function to activate the executable.
+ * @buftok: pointers arrays.
  */
-void exe(char ** buftok)
+void exe(char **buftok)
 {
 	pid_t p, w;
 	int wstatus;
@@ -153,19 +143,31 @@ void exe(char ** buftok)
 
 		if (w == -1)
 			exit(EXIT_FAILURE);
-		/* WUNTRACED:habilita al padre a ser retornado al  waitpid si el hijo se deteiene o muere
-		 * WCONTINUED: retorna al padre si un hijo detenido a sido reanudado mediante la entrega de
-		 * sigcont : es una señal enviada para reanudar un proceso suspendido*/
+		/*
+		 * WUNTRACED:habilita al padre a ser retornado al
+		 * waitpid si el hijo se deteiene o muere
+		 * WCONTINUED: retorna al padre si un hijo detenido
+		 * a sido reanudado mediante la entrega de
+		 * sigcont : es una señal enviada para reanudar un proceso suspendido
+		 */
 	}
-	/* WUNTRACED:habilita al padre a ser retornado al  waitpid si el hijo se deteiene o muere
-		 * WCONTINUED: retorna al padre si un hijo detenido a sido reanudado*/
+	/*
+	 * WUNTRACED:habilita al padre a ser
+	 * retornado al  waitpid si el hijo se deteiene o muere
+	 * WCONTINUED: retorna al padre si un
+	 * hijo detenido a sido reanudado
+	 */
 }
 /**
- *
- *
- *
+ * _getenv - The getenv() function searches
+ * the environment list to find the
+ * environment variable name,
+ * and returns a pointer to the
+ * corresponding value string.
+ * @name: pointer char
+ * Return: 0.
  */
-char * _getenv(char *name)
+char *_getenv(char *name)
 {
 
 	int i = 0, y, count = 0, length;

@@ -1,20 +1,23 @@
 #include "main.h"
-
+/**
+ * main - prototype of shell (command execution program,
+ * often called a command interpreter)
+ * Return: EXIT_SUCCESS;
+ */
 int main(void)
 {
-	char * buffer = NULL;
+	char *buffer = NULL;
 	size_t i = 0;
-
-	char ** buftok;
+	char **buftok;
 
 	while (1)
-	{	
-		if(isatty(0) == 1)
+	{
+		if (isatty(0) == 1)
 			printf("SWF$ ");
-		if(getline(&buffer, &i, stdin) == -1)
+		if (getline(&buffer, &i, stdin) == -1)
 		{
 			free(buffer);
-			return(0);
+			return (0);
 		}
 		else
 		{
