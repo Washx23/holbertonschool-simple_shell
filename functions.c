@@ -32,7 +32,7 @@ char ** split_line(char *line)
 
 	number = num_count(line);
 
-	tokens = calloc(number + 1, sizeof(char *));
+	tokens = _calloc(number + 1, sizeof(char *));
 	if (!tokens)
 	{
 		free(tokens);
@@ -43,12 +43,16 @@ char ** split_line(char *line)
 		tokens[j] = token;
 		token = strtok(NULL, "	 \n");/*apartir de aca tokeniza el siguiente argumento*/
 		j++;
-		return(tokens);
 	}
-	free(line);/*loop que recorre y tokeniza */
+	/*
+	free(line);
+	*/
+	/*loop que recorre y tokeniza */
+	return(tokens);
+	/*
 	free_grid(tokens);
 	exit(0);
-	/*line : lo que quiero tokenizar
+	*/ /*line : lo que quiero tokenizar
 	 * * " \n" limitadores que quiero eliminar*/
 }
 /***
@@ -93,7 +97,7 @@ char ** paste_command(char ** tokens)
 	 while(path[i])
 	 {
 		commandcopy = tokens[0];/*guarda una copia del getline*/
-		command = calloc(_strlen(path[i]) + _strlen(commandcopy) + 2, sizeof(char));
+		command = _calloc(_strlen(path[i]) + _strlen(commandcopy) + 2, sizeof(char));
 		/*almacena espacio para el PATH y el comando*/
 		if (!tokens[0])
 		{
@@ -116,6 +120,7 @@ char ** paste_command(char ** tokens)
 			tokens[0] = command;
 			return(tokens);
 		}
+		free(command), command = NULL;
 		i++;
 	}
 	free_grid(path);
