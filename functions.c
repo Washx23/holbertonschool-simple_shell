@@ -25,6 +25,7 @@ char **split_line(char *line)
 		token = strtok(NULL, "	 \n");
 		/*apartir de aca tokeniza el siguiente argumento*/
 		j++;
+		return (tokens);
 	}
 	return (tokens);
 	/*
@@ -79,6 +80,9 @@ char **paste_command(char **tokens)
 	int i = 0;
 	struct stat buf;
 
+
+	if (!stat(tokens[0], &buf))
+		return (tokens);
 	while (path[i])
 	{
 		commandcopy = tokens[0];/*guarda una copia del getline*/
@@ -105,12 +109,10 @@ char **paste_command(char **tokens)
 			tokens[0] = command;
 			return (tokens);
 		}
-		free(command), command = NULL;
 		i++;
 	}
-	free(tokens);
 	free_grid(path);
-	free(command), command = NULL;
+	free(command);
 	return (0);
 }
 /**
