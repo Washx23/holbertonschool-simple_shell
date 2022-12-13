@@ -43,16 +43,11 @@ char ** split_line(char *line)
 		tokens[j] = token;
 		token = strtok(NULL, "	 \n");/*apartir de aca tokeniza el siguiente argumento*/
 		j++;
+		return(tokens);
 	}
-	/*
-	free(line);
-	*/
-	/*loop que recorre y tokeniza */
-	return(tokens);
-	/*
-	free_grid(tokens);
+	free(line);/*loop que recorre y tokeniza */
 	exit(0);
-	*/ /*line : lo que quiero tokenizar
+	/*line : lo que quiero tokenizar
 	 * * " \n" limitadores que quiero eliminar*/
 }
 /***
@@ -69,7 +64,7 @@ char ** get_path(void)
 	/*PATH : /us/bin..*/
 	pnumber = num_count(path);
 
-	pathtokens = calloc(pnumber + 1, sizeof(char *));
+	pathtokens = _calloc(pnumber + 1, sizeof(char *));
 	ptoken = strtok(path, ":");
 
 	while (ptoken)
@@ -120,7 +115,6 @@ char ** paste_command(char ** tokens)
 			tokens[0] = command;
 			return(tokens);
 		}
-		free(command), command = NULL;
 		i++;
 	}
 	free_grid(path);

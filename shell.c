@@ -13,24 +13,21 @@ int main(void)
 			printf("SWF$ ");
 		if(getline(&buffer, &i, stdin) == -1)
 		{
-			free(buffer), buffer = NULL;
+			free(buffer);
 			return(0);
 		}
 		else
 		{
 			buftok = split_line(buffer);
 			exe(buftok);
+			free_grid(buftok);
 		}
 		if (_strcmp(buffer, "exit") == 0)
 		{
-			free(buffer), buffer = NULL;
+			free(buffer);
 			exit(EXIT_SUCCESS);
 		}
-	free(buffer), buffer = NULL;
-	free(buftok), buftok = NULL;
-	/*
-	free_grid(buftok);
-	*/
 	}
+	free_grid(buftok);
 	exit(EXIT_SUCCESS);
 }

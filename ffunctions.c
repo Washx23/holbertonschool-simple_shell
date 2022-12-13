@@ -13,12 +13,9 @@ int free_grid(char **grid)
 	if(!grid)
 		return(0);
 
-	for (; grid[index]; index++)
-	{
-		if (grid[index])
-			free(grid[index]), grid[index] = NULL;
-	}
-	free(grid), grid = NULL;
+	for (; index < 0; index++)
+		free(grid[index]);
+	free(grid);
 	return(0);
 }
 /**
