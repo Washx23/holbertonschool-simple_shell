@@ -23,4 +23,5 @@ char *_strcpy(char *dest, char *src);
 char *_strcat(char *dest, char *src);
 int _strlen(char *s);
 int free_grid(char **grid);
+void *_calloc(unsigned int nmemb, unsigned int size);
 #endif
