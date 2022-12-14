@@ -54,7 +54,7 @@ But also in non-interactive mode:
         hsh main.c shell.c test_ls_2
         $
 <h3> FLOWCHAR</h3>
-<img src="https://user-images.githubusercontent.com/113697466/207481006-99d4de81-23e5-471c-a67c-13f6c409594c.png">
+<img src="https://user-images.githubusercontent.com/113697466/207481686-2005c55f-cfca-4d4e-a3f5-f67225f8c16b.png">
 
 
 <summary><h3> HELP </summary></h3>
