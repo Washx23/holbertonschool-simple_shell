@@ -53,6 +53,8 @@ But also in non-interactive mode:
         hsh main.c shell.c test_ls_2
         hsh main.c shell.c test_ls_2
         $
+<h3> FLOWCHAR</h3>
+![Sin título-2022-12-13-2152](https://user-images.githubusercontent.com/113697466/207480887-7aa3e355-031d-4322-a142-5a8a2b47f889.png)
 
 <summary><h3> HELP </summary></h3>
 
