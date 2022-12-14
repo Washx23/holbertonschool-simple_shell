@@ -1,0 +1,65 @@
+.TH "13-12-2022" LINUX
+
+.SH NAME
+hsh - shell, the standard command lenguage interpreter
+.SH LIBRARIES
+.B <stdio.h>
+.TP
+.B <string.h>
+.TP
+.B <stdlib.h>
+.TP
+.B <unistd.h>
+.TP
+.B <limits.h>
+.TP
+.B <sys/types.h>
+.TP
+.B <sys/wait.h>
+.TP
+.B <sys/stat.h>
+.TP
+.B <stddef.h>
+.PP
+.SH PROTOTYPES
+.B char **split_line(char *line);
+.TP
+.B char **get_path(void);
+.TP
+.B void exe(char **buftok);
+.TP
+.B char *_getenv(char *envi);
+.TP
+.B extern char **environ;
+.TP
+.B int _strcmp(char *s1, char *s2);
+.TP
+.B char *_strcpy(char *dest, char *src);
+.TP
+.B char *_strcat(char *dest, char *src);
+.TP
+.B int _strlen(char *s);
+.TP
+.B int _strlen(char *s);
+.TP
+.B void *_calloc(unsigned int nmemb, unsigned int size);
+.TP
+.B int num_count(char *var);
+.SH DESCRIPTION
+The hsh utility is a command language interpreter that shall execute commands read from a command line string, the standard input, or a specified file.
+.TP
+.B Format of the string.
+.TP
+The format could be in interactive mode or non interactive mode. To execute a command you can call the full path of the command or simply put the command file name.
+.TP
+.B Special strings
+.TP
+You can print all the environment variables if you put "env".
+.TP
+Also you can exit of hsh mode putting "exit" or pressing ctrl+d.
+.TP
+.B How it works
+.TP
+hsh takes what the user types in as input and executes the appropriate command to the output. In case of an error, hsh will display an error message explaining where the error came from.
+.SH AUTHOR
+writed by Washington Calda and Franco Olmos
